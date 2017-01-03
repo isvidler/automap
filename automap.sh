@@ -1,8 +1,8 @@
 #!/bin/sh
 
 function printBanner() {
-	# Welcome message
-	echo "
+    # Welcome message
+    echo "
      _         _                              
     / \  _   _| |_ ___  _ __ ___   __ _ _ __  
    / _ \| | | | __/ _ \| '_   _ \ / _  | '_ \ 
@@ -19,15 +19,15 @@ function printBanner() {
 # Command line arguments
 non_verbose=0
 while getopts "qh" opt; do
-	case $opt in
-		q)
-			non_verbose=1
-			;;
-		h)
-			echo "This simple script uses nmap to automate host discovery on a network. \nUse the -q option to use quite mode, where only a list of host IPs is printed."
+    case $opt in
+        q)
+            non_verbose=1
+            ;;
+        h)
+            echo "This simple script uses nmap to automate host discovery on a network. \nUse the -q option to use quite mode, where only a list of host IPs is printed."
             exit 0
-			;;
-	esac
+            ;;
+    esac
 done
 
 # Gateway IP
