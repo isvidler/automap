@@ -49,7 +49,6 @@ if [ $non_verbose -eq 0 ]; then
     echo " $ nmap -sn "$ip_range
     # Divider
     echo "-----------------------------------------------------------"
-    echo " Filtered (cleaner) results:\n"
 fi
 
 # Nmap results
@@ -57,6 +56,7 @@ nmap_results=`nmap -sn $ip_range | grep "report" | awk '{print $5}'`
 
 # Print verbose nmap results 
 if [ $non_verbose -eq 0 ]; then
+    echo " Filtered (cleaner) results:\n"
     echo "$nmap_results" | nl -s "| "
     echo "-----------------------------------------------------------\n"
 # Print non-verbose nmap resu;ts
