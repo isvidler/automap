@@ -50,8 +50,6 @@ if [ $non_verbose -eq 0 ]; then
     # Divider
     echo "-----------------------------------------------------------"
     echo " Filtered (cleaner) results:\n"
-    # Nmap results
-    #nmap -sn $ip_range | grep "report" | awk '{print $5}' | nl -s "| "
 fi
 
 # Nmap results
