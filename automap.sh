@@ -16,12 +16,25 @@ function printBanner() {
 	"
 }
 
+function getPorts() {
+    # Host IP
+    host_ip=$1
+    # Type of info saught ("OS" or "PORT")
+    nmap_results=`sudo nmap -A $host_ip`
+    port_results=`echo "$nmap_results" | grep "open"`
+    echo "$port_results"
+}
+
 # Command line arguments
 non_verbose=0
-while getopts "qh" opt; do
+show_ports=0
+while getopts "qph" opt; do
     case $opt in
         q)
             non_verbose=1
+            ;;
+        p)
+            show_ports=1
             ;;
         h)
             echo "This simple script uses nmap to automate host discovery on a network. \nUse the -q option to use quite mode, where only a list of host IPs is printed."
@@ -59,7 +72,28 @@ if [ $non_verbose -eq 0 ]; then
     echo " Filtered (cleaner) results:\n"
     echo "$nmap_results" | nl -s "| "
     echo "-----------------------------------------------------------\n"
-# Print non-verbose nmap resu;ts
-else
+# Print non-verbose nmap results
+elif [ $non_verbose -eq 1 && $show_ports -eq 0 ]; then
     echo "$nmap_results"
+fi
+
+# Port output
+if [ $show_ports -eq 1 ]; then
+    echo "$nmap_results" | while read host; do
+        aggressive_output=`getPorts $host`
+        if [ $non_verbose -eq 0 ]; then
+            echo " $ nmap -A $host | grep \"open\""
+            echo "-----------------------------------------------------------\n"
+            echo " Filtered (cleaner results:\n"
+            echo "$aggressive_output"
+            echo "-----------------------------------------------------------\n"
+        else 
+            echo "$aggressive_output" | while read $output_line; do
+                echo $output_line
+                port=`echo $output_line | cut -d "/" -f 1`
+                echo $port 
+                printf "%s:%s" $host $port
+            done
+        fi
+    done
 fi
