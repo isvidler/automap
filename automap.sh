@@ -73,7 +73,7 @@ if [ $non_verbose -eq 0 ]; then
     echo "$nmap_results" | nl -s "| "
     echo "-----------------------------------------------------------\n"
 # Print non-verbose nmap results
-elif [ $non_verbose -eq 1 && $show_ports -eq 0 ]; then
+elif [ $non_verbose -eq 1 -a $show_ports -eq 0 ]; then
     echo "$nmap_results"
 fi
 
@@ -88,11 +88,11 @@ if [ $show_ports -eq 1 ]; then
             echo "$aggressive_output"
             echo "-----------------------------------------------------------\n"
         else 
-            echo "$aggressive_output" | while read $output_line; do
-                echo $output_line
+            echo "$aggressive_output" | while read output_line; do
                 port=`echo $output_line | cut -d "/" -f 1`
-                echo $port 
-                printf "%s:%s" $host $port
+                if [ "$port" ]; then
+                    printf "%s:%s\n" $host $port
+                fi
             done
         fi
     done
